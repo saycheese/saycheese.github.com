@@ -1,0 +1,58 @@
+---
+layout: page
+tagline: 
+---
+{% include JB/setup %}
+
+
+<div class="subnav page-launcher">
+  <ul class="nav nav-pills">{% for post in paginator.posts %}
+    <li><a href="#{{ post.url | replace:'/',''}}" title="{{ post.title }}">{{ post.title | truncatewords:2 }}</a></li>{% endfor %}
+  </ul>
+</div>
+
+
+<div class="row">
+  <div class="span8">
+  {% for post in paginator.posts %}
+  {% assign content = post.content %}
+  <section id="{{ post.url | replace:'/',''}}">
+    <article>
+      <header>
+      <h1><a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></h1>
+      <div class="date">{{ site.author.name }} 发表于 <span>{{ post.date | date:"%Y-%m-%d" }}</span></div>
+    </header>
+    <div class="content">{{ content }}</div>
+    </article>
+  </section>
+  {% endfor %}
+  <div class="pagination">
+      <ul>{% if paginator.previous_page %}
+        <li class="next"><a href='{% if paginator.previous_page > 1 %}/page{{ paginator.previous_page}}{% else %}/{% endif %}'>&larr; 上一页</a></li>{% endif %}
+        <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">归档</a></li>{% if paginator.next_page %}
+        <li class="prev"><a href='/page{{ paginator.next_page }}'>下一页 &rarr;</a></li>{% endif %}
+      </ul>
+  </div>
+  </div>
+
+  <aside class="span4">
+
+    <section>
+    <h4>最近发表</h4>
+    <ul id="recent_posts">{% for rpost in site.posts limit: 10 %}
+      <li class="post">
+        <a href="{{ BASE_PATH }}{{ rpost.url }}">{{ rpost.title }}</a>
+      </li>{% endfor %}
+    </ul>
+    </section>
+    
+  {% unless site.categories == empty %}
+    <h4>分类</h4>
+    <ul class="tag_box">
+      {% assign categories_list = site.categories %}
+      {% include JB/categories_list %}
+    </ul>
+  {% endunless %}
+
+  </aside>
+</div>
